@@ -1,0 +1,298 @@
+mkdir central_repo
+
+cd central_repo
+
+git init
+
+git config ---global user.name "ABC"
+git config ---global user.email "abc@gmail.com"
+
+(create git repo)
+make sure that .git is present by running ls -a 
+
+vi file1
+(add few lines and save it)
+
+git status ---> used to check whether files are in local workspace or staging area or in git repo
+
+git add file1  ---> this will move files from workspace to staging area
+
+git commit -m "added file1"  ---> this will move files from staging area to git repo
+
+git status  --> make sure working dir is clean 
+
+git log ---> shows you history of this repo
+
+git log filename ---> will show history of single file
+
+git log -2 ----> show latest two commits 
+
+git log -2 filename ---> shows latest two commits on that file
+
+-------------------------------------------------------------------------------------------
+
+modify that file1 again and add few more lines to it
+
+git add file1
+git commit -m "modified file1"
+git log
+take previous commit ID and run below command with commit ID
+
+git checkout <commitID>  -----> used to switch to previous commit or other branch or tag
+
+check content of file1 and also run git log 
+
+git checkout master -------> switch to latest commit 
+
+-------------------------------------------------------------------- 
+tag
+
+is name given to set of versions of files and dirs. It indicates milestone of a project.
+
+we can not modify tag... we can only delete it
+
+how do you list tags
+
+git tag
+
+git tag tagname ----> used to tag version of files and dirs
+
+git tag -d tagname  --> delete tag
+
+git checkout tagname ---> switch to tag
+
+git checkout master ---> switch to latest version
+--------------------------------------------------------------------
+
+branch ---> is for parallel development. two people or two teams will work the same code for developing different set of features and integrate by merging 
+
+git branch  ---> list branches
+
+git branch branchname  ---> create branch from checkedout branch
+
+git branch branch2 branch1  ---> create branch2 from branch1
+
+git branch branch3 tagname  ---> create branch 3 from tag
+
+git checkout -b branch4 ---> create branch4 and checkout to that automatically
+
+git branch -d branchname -----> delete branch
+-------------------------------------------------------------------------------------------------------------
+
+what is merge conflict?
+
+ Will occur when the same piece of code is changed on two different branches, when we try to merge those two brnaches, then merge conflict will occur,
+To resolve this issue, I don‘t know whose changes should I take 
+to the merge , so I contact developers who changed the code on branch1 and branch2. Then they will 
+decide and tell us whose changes should I take into merge,then I take that change and commit it, continue with the merge
+( I get to know who modified the code on branch1 and branch2 using git log command)
+====================================================================================================================================
+git cherry-pick  --> used to merge particular commit from one branch to another (used to get required changes from one branch to another)
+
+git cherry-pick commit1 commit2 
+
+-------------------------------------------------------------------------------------------
+rebase
+
+is nothing but merge, one branch will get added to tip of another branch. (history will get added to another branch).
+
+we can squash multiple commits and then merge it to another if required
+
+
+git rebase branch 
+----------------------------------------------------------------------------------------------
+how do you squash multiple commits?
+
+git rebase -i HEAD~3 
+
+HEAD means always point to latest commit
+
+==========================================================================================
+
+git revert ---> used to undo committed changes. but history will be tracked 
+
+git revert HEAD
+
+------------------------------------------------------------------------------------------------------
+
+git clone --->
+
+used to bring whole remote repo to local workspace for first time 
+
+git clone /home/ec2-user/remote_repo
+
+git clone user@server:/home/ec2-user/remote_repo
+
+----------------------------------------------------------------------------------------
+git push
+
+it will push changes from local workspace to central repo 
+git push /home/ec2-user/remote_repo master
+
+git push user@server:/home/ec2-user/remote_repo master
+------------------------------------------------------------------
+you are on branch1 
+
+git push /home/ec2-user/remote_repo branch1
+
+git push user@server:/home/ec2-user/remote_repo branch1
+-----------------------------------------------------------------------------------
+
+git pull ---> 
+
+it will bring changes from central repo to local workspace and merges automatically
+
+git pull /home/ec2-user/remote_repo
+
+git pull user@server:/home/ec2-user/remote_repo
+
+git pull = git fetch + git merge 
+--------------------------------------------------------------------------------------------------
+
+git fetch---> will bring changes from central repo and save it in separate branch. you can review it and merge if required
+
+git fetch /home/ec2-user/remote_repo
+
+git fecth user@server:/home/ec2-user/remote_repo
+--------------------------------------------------------------------------------------------------------------------------------
+
+diff between bare and non bare
+
+bare repo --> it's central repo, you can push and pull changes from it. we can't run any git operations on git
+
+git init --bare
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+non bare --> it's local git repo where we can run all git operations. 
+
+git init
+-----------------------------------------------------------------------------------------------------------------------
+
+Git stash
+o If I am working on one branch, if I get some critical work, 
+which needs to be fixed on the other branch. I don‘t want to 
+commit changes in current branch, as I not completed the work, I 
+will do git stash and I switch to other branch I will fix the issue 
+and I come back to the previous branch to continue my work. I 
+need to run git stash pop.
+
+Git stash will saves files somewhere in temporary area. It will 
+not stores in workspace, staging area or git repo.
+ Touch f1 f2 f3
+ Git add *
+ Git commit –m ―files added‖
+ Switch to other branch and check.
+ Git stash – then come back to other branch and try
+ Git status pop
+ Git reset HEAD
+
+----------------------------------------------------------------------------------------------
+
+Makefile
+Works on time stamp basis, if target time is less than the dependencies time it will regenerate the target, that means makefile will compare target time with its 
+dependencies time.
+If target time is latest than its dependencies it will not re-generate the target.
+If there are thousand files, if I change 5 files, only 5 files will get re-compiled and 
+incorporated at the build.
+
+Pacth build or hot fix
+ It is a critical fix which needs to be deliver to a customer within few hours. 
+Developers will change only required files, make will compile only changed files and 
+changes will get incorporated to the build so patch build will take less time.
+
+Load build
+ We compile source code from the scratch, before we start this build we delete all 
+intermediate files (.o files), so that all files will get compile from scratch. So it take 
+more time
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+build ---> it's an executable before testing
+release ---> tested build which is ready to release to customer 
+Sanity test or BVT (Build verification test) ----> it's basic functionality of build which should never break
+release note ---> tag name and know issues
+------------------------------------------------------------------------------------------------------------------------------------------
+
+what kind issues you face normally?
+
+we do many builds in a day. so we face issues build failures. Once build is failed, we need to debug and identify why build is broken. 
+if it's compilation issue, need to work with developers and get it fixed. If it's build environment issue, we need to debug and fix from our side.
+
+environment issue can be 
+1) memory may be full on the server 
+2) cpu is high on the server 
+3) version of mismatch of some tools 
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+JIRA
+
+open --> assigned ---> In progress --> fixed or resolved ---> testing ---> closed 
+----------------------------------------------------------------------------------------------------------
+
+-----priority of the ticket------------------
+critical
+high
+normal 
+low
+------------------------------------------------------------------
+
+diff between web server and applications
+
+--------------------------------------------------------------------------------
+
+explain deployment process or how do you deploy?
+
+we deploy war file to tomcat server. we have script to do deployment
+script will 
+step1: stop tomcat 
+step2: take backup of application logs
+step3: take backup current build 
+step4: copy new war file to webapps folder
+step5: start tomcat
+
+-----------------------------------------------------------------------------------
+
+we support QA, UAT and Prod environment. We need manager's approval for QA and UAT deployment.
+We need to take CAB (Change Advisory Board) approval for production deployment.
+If deployment failed, We will try to fix issue within deployment window, If i can't resolve issue, we will rollback to previous build.
+(we have rollback script to deploy old build)
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+Assignment1:what is blue-green deployment ?
+
+-------------------------------------------------------------------------------------------------------------
+Assignment2:
+one server, make sure maven and java are available. 
+download java project with pom.xml
+
+mvn clean deploy
+
+-------------------------------------------------------------------------------
+Assignment3: 
+Install tomcat on ubuntu server
+download calendar.war from google
+
+deploy calendar.war to tomcat server(webapps) and restart
+
+sudo service tomcat start
+suod service tomcat stop 
+suod service tomcat restart
+------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
